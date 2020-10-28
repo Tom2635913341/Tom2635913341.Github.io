@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+		<title>lab3b</title>
+		<!-- 顶点着色器和片元着色器代码 -->
+		<script id="vertex-shader" type="x-shader/x-vertex">
+			attribute vec4 vPosition;
+			uniform float theta;
+			
+			void main(){
+				float u = cos( theta );
+				float v = sin( theta );
+				
+				gl_Position.x = vPosition.x * u - vPosition.y * v;
+				gl_Position.y = vPosition.x * v + vPosition.y * u;
+				gl_Position.z = 0.0;
+				gl_Position.w = 1.0;
+				//gl_Position = vPosition;	
+			}
+		</script>
+		<script id="fragment-shader" type="x-shader/x-fragment">
+			precision mediump float;   //片元精度  
+			void main(){
+				gl_FragColor =vec4( 0.0, 0.0, 0.0, 1.0 ); //片元颜色
+				
+			}
+		</script>
+		<!-- 一组相关的JS库 -->
+		<script type="text/javascript" src="./common/webgl-utils.js"></script>
+		<script type="text/javascript" src="./common/initShaders.js"></script>
+		<script type="text/javascript" src="./common/glMatrix-0.9.5.min.js"></script>
+		<script type="text/javascript" src="./common/gl-matrix.js"></script>
+		<script type="text/javascript" src="./common/gl-matrix-min.js"></script>
+		<!-- 绘制三角形的JS代码 -->
+		<script type="text/javascript" src="./js/ch03/lab3-b.js"></script>
+	</head>
+	<body onload="initPicture()">
+		<canvas id="canvas" style="border:none;" width="500" height="500"></canvas>
+		<fieldset>
+		    <legend>转动</legend>
+		    <button id="direction" onclick="changeDir()">换个转动方向</button><br>
+		    转动速度: 0<input type="range" id="speedcon" min="0" max="100" value="0" step="10"> 100
+		</fieldset>
+	</body>
+</html>
