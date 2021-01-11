@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Lab4-2</title>
+		<script id="v-shader" type="x-shader/x-vertex">
+			attribute vec4 vPosition;
+			attribute vec4 vColor;
+			
+			varying vec4 fColor;
+			
+			uniform vec2 z;
+			uniform vec2 m;
+			uniform vec2 theta;
+			
+			void main(){
+				vec2 angles = radians(theta);
+				vec2 cost = cos(theta);
+				vec2 sint = sin(theta);
+				
+				mat4 rx = mat4(  1.0,  0.0,  0.0, 0.0,
+								 0.0,  cost.x,  sint.x, 0.0,
+								 0.0,  -sint.x,  cost.x, 0.0,
+								 0.0,  0.0,  0.0, 1.0);
+				
+				mat4 ry = mat4(cost[0], 0.0, -sint[0], 0.0,
+							   0.0, 1.0, 0.0, 0.0,
+							   sint[0], 0.0, cost[0], 0.0,
+							   0.0, 0.0, 0.0, 1.0);
+				
+				mat4 rz = mat4(cost[1], sint[1], 0.0, 0.0,
+							   -sint[1], cost[1], 0.0, 0.0,
+							   0.0, 0.0, 1.0, 0.0,
+							   0.0, 0.0, 0.0, 1.0);
+							   
+				mat4 z = mat4(1.0+z[0], 0.0, 0.0, 0.0,
+								 0.0, 1.0+z[1], 0.0, 0.0,
+								 0.0, 0.0, 1.0, 0.0,
+								 0.0, 0.0, 0.0, 1.0);
+								 
+				mat4 mt = mat4(1.0, 0.0, 0.0, 0.0,
+							   0.0, 1.0, 0.0, 0.0,
+							   0.0, 0.0, 1.0, 0.0,
+							   m[0], m[1], 0.0, 1.0);
+							   
+				gl_Position = vPosition;
+				gl_Position = ry * rz * gl_Position;
+				gl_Position = z * gl_Position;
+				gl_Position = mt * gl_Position;
+				fColor = vColor;
+			}
+		</script>
+
+		<script id="f-shader" type="x-shader/x-fragment">
+			precision mediump float;
+			varying vec4 fColor;
+			
+			void main(){
+				gl_FragColor = fColor;
+			}
+		</script>
+		<script type="text/javascript" src="../js/common/webgl-utils.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../js/common/initShaders.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../js/common/gl-matrix-min.js" charset="utf-8"></script>
+		
+		<script type="text/javascript" src="../js/common/san.js" charset="utf-8"></script>
+	</head>
+	<body>
+		<h3>Lab4-2</h3>
+		<canvas id="canvas" width="512" height="512" >
+			    你的浏览器不支持HTML5 canvas元素
+		</canvas>
+		<hr >
+		<h4>选择图案</h4>
+        <a href="../html/san.html"><input type="button" value="正三角形"></a>
+		<a href="../html/square.html"><input type="button" value="正方形"></a>
+		<a href="../html/cube.html"><input type="button" value="立方体"></a>
+		<a href="../html/circle.html"><input type="button" value="圆形"></a>
+		<hr >
+		
+		<a href="../html/san.html"><input type="button" name="" id="" value="清空界面" /></a>
+
+	</body>
+</html>
